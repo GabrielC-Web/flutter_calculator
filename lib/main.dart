@@ -36,10 +36,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => CalculatorState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class CalculatorState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -48,9 +48,24 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.black12,
+        leading: const Icon(
+          Icons.settings,
+          color: Colors.orange,
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(top: 18.0),
+            child: Text('DEG', style: TextStyle(color: Colors.white38)),
+          ),
+          SizedBox(width: 20),
+        ],
+      ),
+      body: const Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: CalculatorPage()),
@@ -145,7 +160,7 @@ class CalculatorButtons extends StatelessWidget {
 Widget calcButton(
     String buttonText, Color buttonColor, void Function()? buttonPressed) {
   return Container(
-    width: buttonText == '=' ? 150 : 75,
+    width: buttonText == '=' ? 165 : 75,
     height: 70,
     padding: const EdgeInsets.all(0),
     child: ElevatedButton(
