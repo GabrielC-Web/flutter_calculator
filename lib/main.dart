@@ -11,26 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Calculator',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: false,
+        primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -64,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return const Scaffold(
-      // backgroundColor: Colors.black,
+      backgroundColor: Colors.black,
       body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
@@ -78,11 +63,15 @@ class CalculatorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CalculatorButtons(),
-      ],
+    return const Expanded(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 50),
+          CalculatorButtons(),
+        ],
+      ),
     );
   }
 }
@@ -92,96 +81,87 @@ class CalculatorButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                calcButton('C', Colors.orange, null),
-                calcButton('+/-', Colors.white, null),
-                calcButton('%', Colors.white, null),
-                calcButton('÷', Colors.white, null),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                calcButton('7', Colors.white, null),
-                calcButton('8', Colors.white, null),
-                calcButton('9', Colors.white, null),
-                calcButton('x', Colors.white, null),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                calcButton('4', Colors.white, null),
-                calcButton('5', Colors.white, null),
-                calcButton('6', Colors.white, null),
-                calcButton('-', Colors.white, null),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                calcButton('1', Colors.white, null),
-                calcButton('2', Colors.white, null),
-                calcButton('3', Colors.white, null),
-                calcButton('+', Colors.white, null),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                calcButton('0', Colors.white, null),
-                calcButton(',', Colors.white, null),
-                calcButton('=', Colors.white, null),
-              ],
-            ),
-          ],
-        )
-      ],
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              calcButton('C', Colors.grey, () => ('C')),
+              calcButton('+/-', Colors.grey, () => ('+/-')),
+              calcButton('%', Colors.grey, () => ('%')),
+              calcButton('÷', Colors.orange, () => ('÷')),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              calcButton('7', Colors.grey[900]!, () => ('7')),
+              calcButton('8', Colors.grey[900]!, () => ('8')),
+              calcButton('9', Colors.grey[900]!, () => ('9')),
+              calcButton('x', Colors.orange, () => ('x')),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              calcButton('4', Colors.grey[900]!, () => ('AC')),
+              calcButton('5', Colors.grey[900]!, () => ()),
+              calcButton('6', Colors.grey[900]!, () => ()),
+              calcButton('-', Colors.orange, () => ()),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              calcButton('1', Colors.grey[900]!, () => ()),
+              calcButton('2', Colors.grey[900]!, () => ()),
+              calcButton('3', Colors.grey[900]!, () => ()),
+              calcButton('+', Colors.orange, () => ()),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              calcButton('0', Colors.grey[900]!, () => ()),
+              calcButton(',', Colors.grey[900]!, () => ()),
+              calcButton('=', Colors.orange, () => ()),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
     );
   }
 }
 
 Widget calcButton(
     String buttonText, Color buttonColor, void Function()? buttonPressed) {
-  // return Container(
-  //   width: buttonText == '=' ? 150 : 75,
-  //   height: 70,
-  //   padding: const EdgeInsets.all(0),
-  //   child: ElevatedButton(
-  //     onPressed: buttonPressed,
-  //     style: ElevatedButton.styleFrom(
-  //         shape: const RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.all(Radius.circular(20))),
-  //         backgroundColor: Colors.red,
-  //         minimumSize: const Size(70, 70),
-  //         padding: const EdgeInsets.all(20)),
-  //     // style: ButtonStyle(
-  //     //     backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
-  //     child: Text(
-  //       buttonText,
-  //       style: const TextStyle(fontSize: 27, color: Colors.white),
-  //     ),
-  //   ),
-  // );
-  return ElevatedButton(
-    onPressed: buttonPressed,
-    style: ElevatedButton.styleFrom(
-        // shape: const RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.all(Radius.circular(20))),
-        backgroundColor: Colors.red,
-        padding: const EdgeInsets.all(20)),
-    // style: ButtonStyle(
-    //     backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
-    child: Text(
-      buttonText,
-      style: const TextStyle(fontSize: 27, color: Colors.white),
+  return Container(
+    width: buttonText == '=' ? 150 : 75,
+    height: 70,
+    padding: const EdgeInsets.all(0),
+    child: ElevatedButton(
+      onPressed: buttonPressed,
+      style: ElevatedButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          backgroundColor: buttonColor,
+          minimumSize: const Size(70, 70),
+          padding: const EdgeInsets.all(20)),
+      // style: ButtonStyle(
+      //     backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
+      child: Text(
+        buttonText,
+        style: const TextStyle(fontSize: 27, color: Colors.white),
+      ),
     ),
   );
 }
