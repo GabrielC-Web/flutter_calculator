@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calculator/calc_button.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 void main() {
@@ -162,17 +163,17 @@ class CalculatorState extends State<MyHomePage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.black12,
-          leading: const Icon(
-            Icons.settings,
-            color: Colors.orange,
-          ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(top: 18.0),
-              child: Text('DEG', style: TextStyle(color: Colors.white38)),
-            ),
-            SizedBox(width: 20),
-          ],
+          // leading: const Icon(
+          //   Icons.settings,
+          //   color: Colors.orange,
+          // ),
+          // actions: const [
+          //   Padding(
+          //     padding: EdgeInsets.only(top: 18.0),
+          //     child: Text('DEG', style: TextStyle(color: Colors.white38)),
+          //   ),
+          //   SizedBox(width: 20),
+          // ],
         ),
         body: SafeArea(
           child: Column(
@@ -180,47 +181,54 @@ class CalculatorState extends State<MyHomePage> {
             children: [
               Align(
                 alignment: Alignment.bottomRight,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(result,
-                                  textAlign: TextAlign.left,
+                child: RawScrollbar(
+                  radius: const Radius.circular(10),
+                  thumbVisibility: result.length > 7,
+                  trackVisibility: result.length > 7,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(result,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize:
+                                            result.length > 7 ? 60 : 40))),
+                            // const Icon(Icons.more_vert,
+                            //     color: Colors.orange, size: 30),
+                            const SizedBox(width: 20),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(equation,
                                   style: const TextStyle(
-                                      color: Colors.white, fontSize: 80))),
-                          const Icon(Icons.more_vert,
-                              color: Colors.orange, size: 30),
-                          const SizedBox(width: 20),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Text(equation,
-                                style: const TextStyle(
-                                  fontSize: 40,
-                                  color: Colors.white38,
-                                )),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.backspace_outlined,
-                                color: Colors.orange, size: 30),
-                            onPressed: () {
-                              buttonPressed("⌫");
-                            },
-                          ),
-                          const SizedBox(width: 20),
-                        ],
-                      )
-                    ],
+                                    fontSize: 40,
+                                    color: Colors.white38,
+                                  )),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.backspace_outlined,
+                                  color: Colors.orange, size: 30),
+                              onPressed: () {
+                                buttonPressed("⌫");
+                              },
+                            ),
+                            const SizedBox(width: 20),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -303,28 +311,4 @@ class CalculatorState extends State<MyHomePage> {
           ),
         ));
   }
-}
-
-Widget calcButton(
-    String buttonText, Color buttonColor, void Function()? buttonPressed) {
-  return Container(
-    width: buttonText == '=' ? 165 : 75,
-    height: 70,
-    padding: const EdgeInsets.all(0),
-    child: ElevatedButton(
-      onPressed: buttonPressed,
-      style: ElevatedButton.styleFrom(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          backgroundColor: buttonColor,
-          minimumSize: const Size(70, 70),
-          padding: const EdgeInsets.all(20)),
-      // style: ButtonStyle(
-      //     backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
-      child: Text(
-        buttonText,
-        style: const TextStyle(fontSize: 27, color: Colors.white),
-      ),
-    ),
-  );
 }
