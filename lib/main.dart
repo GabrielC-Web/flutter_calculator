@@ -61,46 +61,92 @@ class CalculatorState extends State<MyHomePage> {
     }
 
     setState(() {
-      if (buttonText == 'C') {
-        equation = '0';
-        result = '0';
-      } else if (buttonText == '⌫') {
-        equation = equation.substring(0, equation.length - 1);
-        if (equation == "") {
-          equation = "0";
-        }
-      } else if (buttonText == '+/-') {
-        if (equation[0] != '-') {
-          equation = '-$equation';
-        } else {
-          equation = equation.substring(1);
-        }
-      } else if (buttonText == '=') {
-        expression = equation;
-        expression = expression.replaceAll('x', '*');
-        expression = expression.replaceAll('÷', '/');
-        expression = expression.replaceAll('%', '%');
-
-        try {
-          Parser p = Parser();
-          Expression exp = p.parse(expression);
-
-          ContextModel cm = ContextModel();
-          result = '${exp.evaluate(EvaluationType.REAL, cm)}';
-          if (expression.contains('%')) {
-            result = doesContainDecimal(result);
+      switch (buttonText) {
+        case 'C':
+          equation = '0';
+          result = '0';
+          break;
+        case '⌫':
+          equation = equation.substring(0, equation.length - 1);
+          if (equation == "") {
+            equation = "0";
           }
-        } catch (e) {
-          result = "Error";
-        }
-      } else {
-        if (equation == "0") {
-          equation = buttonText;
-        } else {
-          equation = equation + buttonText;
-        }
+        case '+/-':
+          if (equation[0] != '-') {
+            equation = '-$equation';
+          } else {
+            equation = equation.substring(1);
+          }
+        case '=':
+          if (equation[equation.length - 1] == 'x' ||
+              equation[equation.length - 1] == '÷' ||
+              equation[equation.length - 1] == '%' ||
+              equation[equation.length - 1] == '-' ||
+              equation[equation.length - 1] == '+') {
+            //* Muestro el error
+            errorSnackBar('¡Formato inválido!');
+            return;
+          }
+
+          expression = equation;
+          expression = expression.replaceAll('x', '*');
+          expression = expression.replaceAll('÷', '/');
+          expression = expression.replaceAll('%', '%');
+
+          try {
+            Parser p = Parser();
+            Expression exp = p.parse(expression);
+
+            ContextModel cm = ContextModel();
+            result = '${exp.evaluate(EvaluationType.REAL, cm)}';
+            if (expression.contains('%')) {
+              result = doesContainDecimal(result);
+            }
+          } catch (e) {
+            result = "Error";
+          }
+        default:
+          final String currentLastValue = equation[equation.length - 1];
+          final String newLastValue = buttonText;
+
+          //* Veo si hay más de un elemento
+          if (equation.length >= 2) {
+            //* Veo si es un operador
+            if ((currentLastValue == 'x' ||
+                    currentLastValue == '÷' ||
+                    currentLastValue == '%' ||
+                    currentLastValue == '-' ||
+                    currentLastValue == '+') &&
+                (newLastValue == 'x' ||
+                    newLastValue == '÷' ||
+                    newLastValue == '%' ||
+                    newLastValue == '-' ||
+                    newLastValue == '+')) {
+              //* Muestro el error
+              errorSnackBar('¡Formato inválido!');
+              return;
+            }
+          }
+
+          if (equation == "0") {
+            equation = buttonText;
+          } else {
+            equation = equation + buttonText;
+          }
       }
     });
+  }
+
+  //* Abre el snackbar de error
+  errorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(milliseconds: 500),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.all(20),
+      content: Text(message),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      padding: const EdgeInsets.all(8.0),
+    ));
   }
 
   @override
