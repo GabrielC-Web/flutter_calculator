@@ -273,8 +273,8 @@ class CalculatorState extends State<MyHomePage> {
                             '5', Colors.grey[900]!, () => buttonPressed('5')),
                         calcButton(
                             '6', Colors.grey[900]!, () => buttonPressed('6')),
-                        calcButton(
-                            '-', Colors.orange, () => buttonPressed('-')),
+                        calcButton('-', const Color.fromRGBO(255, 152, 0, 1),
+                            () => buttonPressed('-')),
                       ],
                     ),
                     const SizedBox(height: 10),
